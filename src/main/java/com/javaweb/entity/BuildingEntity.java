@@ -84,15 +84,56 @@ public class BuildingEntity extends BaseEntity {
 //    @Column(name = "image")
 //    private String image;
 
-    @OneToMany(fetch = FetchType.LAZY,
-    mappedBy = "building")
-    List<AssignmentBuildingEntity> assignmentBuildingEntities=new ArrayList<>();
+//    @OneToMany(fetch = FetchType.LAZY,
+//    mappedBy = "building")
+//    List<AssignmentBuildingEntity> assignmentBuildingEntities=new ArrayList<>();
 
-    @OneToMany(mappedBy="building", fetch= FetchType.LAZY)
-    private List<BuildingRentTypeEntity> buildingRentTies = new ArrayList<>();
+//    @OneToMany(mappedBy="building", fetch= FetchType.LAZY)
+//    private List<BuildingRentTypeEntity> buildingRentTies = new ArrayList<>();
 
-    @OneToMany(mappedBy = "building", fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.LAZY)
+        @JoinTable(name = "buildingrenttype",
+                joinColumns = @JoinColumn(name = "buildingid"),
+                inverseJoinColumns = @JoinColumn(name = "renttypeid")
+    )
+    private List<RentTypeEntity>rentTypes=new ArrayList<>();
+
+    @OneToMany(mappedBy = "building", fetch = FetchType.LAZY,  cascade = {CascadeType.PERSIST, CascadeType.MERGE}, orphanRemoval = true)
     private List<RentAreaEntity> rentAreaEntities = new ArrayList<>();
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "assignmentbuilding",
+            joinColumns = @JoinColumn(name = "buildingid"),
+            inverseJoinColumns = @JoinColumn(name="staffid")
+    )
+    private List<UserEntity>users=new ArrayList<>();
+
+    public List<RentTypeEntity> getRentTypes() {
+        return rentTypes;
+    }
+
+    public void setRentTypes(List<RentTypeEntity> rentTypes) {
+        this.rentTypes = rentTypes;
+    }
+
+
+
+    public List<UserEntity> getUsers() {
+        return users;
+    }
+
+    public void setUsers(List<UserEntity> users) {
+        this.users = users;
+    }
+
+
+//    public List<RentTypeEntity> getRentType() {
+//        return rentType;
+//    }
+//
+//    public void setRentType(List<RentTypeEntity> rentType) {
+//        this.rentType = rentType;
+//    }
 
     public List<RentAreaEntity> getRentAreaEntities() {
         return rentAreaEntities;
@@ -118,13 +159,13 @@ public class BuildingEntity extends BaseEntity {
         this.deposit = deposit;
     }
 
-    public List<AssignmentBuildingEntity> getAssignmentBuildingEntities() {
-        return assignmentBuildingEntities;
-    }
-
-    public void setAssignmentBuildingEntities(List<AssignmentBuildingEntity> assignmentBuildingEntities) {
-        this.assignmentBuildingEntities = assignmentBuildingEntities;
-    }
+//    public List<AssignmentBuildingEntity> getAssignmentBuildingEntities() {
+//        return assignmentBuildingEntities;
+//    }
+//
+//    public void setAssignmentBuildingEntities(List<AssignmentBuildingEntity> assignmentBuildingEntities) {
+//        this.assignmentBuildingEntities = assignmentBuildingEntities;
+//    }
 
     public BigDecimal getBrokerageFee() {
         return brokerageFee;
@@ -310,11 +351,11 @@ public class BuildingEntity extends BaseEntity {
         this.waterFee = waterFee;
     }
 
-    public List<BuildingRentTypeEntity> getBuildingRentTies() {
-        return buildingRentTies;
-    }
-
-    public void setBuildingRentTies(List<BuildingRentTypeEntity> buildingRentTies) {
-        this.buildingRentTies = buildingRentTies;
-    }
+//    public List<BuildingRentTypeEntity> getBuildingRentTies() {
+//        return buildingRentTies;
+//    }
+//
+//    public void setBuildingRentTies(List<BuildingRentTypeEntity> buildingRentTies) {
+//        this.buildingRentTies = buildingRentTies;
+//    }
 }

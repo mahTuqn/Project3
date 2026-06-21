@@ -18,8 +18,19 @@ public class RentTypeEntity {
     @Column(name = "name")
     private String name;
 
-    @OneToMany(mappedBy="rentType", fetch= FetchType.LAZY)
-    private List<BuildingRentTypeEntity> buildingRentTies = new ArrayList<>();
+    @ManyToMany(mappedBy = "rentTypes", fetch = FetchType.LAZY)
+    private List<BuildingEntity>buildings = new ArrayList<>();
+
+    public List<BuildingEntity> getBuildings() {
+        return buildings;
+    }
+
+    public void setBuildings(List<BuildingEntity> buildings) {
+        this.buildings = buildings;
+    }
+
+    //    @OneToMany(mappedBy="rentType", fetch= FetchType.LAZY)
+//    private List<BuildingRentTypeEntity> buildingRentTies = new ArrayList<>();
     // Bắt buộc phải tạo Getter và Setter
     public Long getId() {
         return id;
@@ -45,11 +56,11 @@ public class RentTypeEntity {
         this.name = name;
     }
 
-    public List<BuildingRentTypeEntity> getBuildingRentTies() {
-        return buildingRentTies;
-    }
-
-    public void setBuildingRentTies(List<BuildingRentTypeEntity> buildingRentTies) {
-        this.buildingRentTies = buildingRentTies;
-    }
+//    public List<BuildingRentTypeEntity> getBuildingRentTies() {
+//        return buildingRentTies;
+//    }
+//
+//    public void setBuildingRentTies(List<BuildingRentTypeEntity> buildingRentTies) {
+//        this.buildingRentTies = buildingRentTies;
+//    }
 }

@@ -1,14 +1,13 @@
 package com.javaweb.api.admin;
 
 
-import com.javaweb.entity.AssignmentBuildingEntity;
 import com.javaweb.entity.BuildingEntity;
 import com.javaweb.entity.RentAreaEntity;
 import com.javaweb.entity.UserEntity;
 import com.javaweb.model.dto.AssignmentBuildingDTO;
 import com.javaweb.model.dto.BuildingDTO;
 import com.javaweb.model.response.ResponseDTO;
-import com.javaweb.repository.AssignmentBuildingRepository;
+//import com.javaweb.repository.AssignmentBuildingRepository;
 import com.javaweb.repository.BuildingRepository;
 import com.javaweb.repository.RentAreaRepository;
 import com.javaweb.repository.UserRepository;
@@ -28,8 +27,8 @@ public class BuildingAPI {
     private BuildingService buildingService;
     @Autowired
     private BuildingRepository buildingRepository;
-    @Autowired
-    private AssignmentBuildingRepository assignmentBuildingRepository;
+//    @Autowired
+//    private AssignmentBuildingRepository assignmentBuildingRepository;
     @Autowired
     private UserRepository userRepository;
     @Autowired
@@ -43,7 +42,7 @@ public class BuildingAPI {
             build = new BuildingEntity();
         } else {
             build = buildingRepository.findById(buildingDTO.getId()).get();
-            rentAreaRepository.deleteByBuildingId(build.getId());
+//            rentAreaRepository.deleteByBuildingId(build.getId());
         }
         build.setName(buildingDTO.getName());
         build.setDistrict(buildingDTO.getDistrict());
@@ -56,7 +55,6 @@ public class BuildingAPI {
         build.setManagerName(buildingDTO.getManagerName());
         build.setManagerPhone(buildingDTO.getManagerPhone());
 
-        buildingRepository.save(build);
 
         List<RentAreaEntity>rentAreas= new ArrayList<>();
         String[] arr= buildingDTO.getRentArea().split(",");
@@ -65,10 +63,9 @@ public class BuildingAPI {
             rentArea.setValue(item);
             rentArea.setBuilding(build);
             rentAreas.add(rentArea);
-            rentAreaRepository.save(rentArea);
         }
         build.setRentAreaEntities(rentAreas);
-
+        buildingRepository.save(build);
 
         //xuong DB xu li du lieu de update hoac them moi
 //        return buildingDTO;
@@ -78,16 +75,15 @@ public class BuildingAPI {
     @DeleteMapping("/{ids}")
     public void deleteBuilding(@PathVariable Long[] ids) {
 
-        //System.out.println("START DELETE");
-
-        assignmentBuildingRepository.deleteByBuildingIdIn(ids);
-
-        rentAreaRepository.deleteByBuildingIdIn(ids);
-        //System.out.println("DELETE ASSIGNMENT OK");
+//        assignmentBuildingRepository.deleteByBuildingIdIn(ids);
+//
+//        rentAreaRepository.deleteByBuildingIdIn(ids);
+//
+//        buildingRepository.deleteByIdIn(ids);
 
         buildingRepository.deleteByIdIn(ids);
 
-        //System.out.println("DELETE BUILDING OK");
+
     }
 
     @GetMapping("/{id}/staffs")
@@ -101,20 +97,25 @@ public class BuildingAPI {
     @PostMapping("/assignment")
     public void updateAssignmentBuilding(@RequestBody AssignmentBuildingDTO assignmentBuildingDTO) {
 
-        assignmentBuildingRepository.deleteByBuildingId(assignmentBuildingDTO.getBuildingId());
-        for(Long item:assignmentBuildingDTO.getStaffs()) {
-            AssignmentBuildingEntity assignmentBuilding= new AssignmentBuildingEntity();
-            BuildingEntity building = buildingRepository.findById(assignmentBuildingDTO.getBuildingId()).get();
-            List<UserEntity> users = userRepository.findByStatusAndRoles_Code(1,"USER");
-            for(UserEntity it: users) {
-                if(it.getId().equals(item)) {
-                    UserEntity user = userRepository.findById(item).get();
-                    assignmentBuilding.setBuilding(building);
-                    assignmentBuilding.setUser(user);
-                    assignmentBuildingRepository.save(assignmentBuilding);
-                }
-            }
-        }
+//        assignmentBuildingRepository.deleteByBuildingId(assignmentBuildingDTO.getBuildingId());
+//        for(Long item:assignmentBuildingDTO.getStaffs()) {
+//            AssignmentBuildingEntity assignmentBuilding= new AssignmentBuildingEntity();
+//            BuildingEntity building = buildingRepository.findById(assignmentBuildingDTO.getBuildingId()).get();
+//            List<UserEntity> users = userRepository.findByStatusAndRoles_Code(1,"USER");
+//            for(UserEntity it: users) {
+//                if(it.getId().equals(item)) {
+//                    UserEntity user = userRepository.findById(item).get();
+//                    assignmentBuilding.setBuilding(building);
+//                    assignmentBuilding.setUser(user);
+//                    assignmentBuildingRepository.save(assignmentBuilding);
+//                }
+//            }
+//        }
+
+        BuildingEntity buildingEntity= buildingRepository.findById(assignmentBuildingDTO.getBuildingId()).get();
+        List<UserEntity> staffs= userRepository.findByIdIn(assignmentBuildingDTO.getStaffs());
+        buildingEntity.setUsers(staffs);
+        buildingRepository.save(buildingEntity);
         System.out.println("ok");
     }
 }

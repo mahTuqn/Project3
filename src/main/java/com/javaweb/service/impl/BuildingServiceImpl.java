@@ -1,11 +1,9 @@
 package com.javaweb.service.impl;
 
-import com.javaweb.entity.AssignmentBuildingEntity;
 import com.javaweb.entity.BuildingEntity;
 import com.javaweb.entity.UserEntity;
 import com.javaweb.model.response.ResponseDTO;
 import com.javaweb.model.response.StaffResponseDTO;
-import com.javaweb.repository.AssignmentBuildingRepository;
 import com.javaweb.repository.BuildingRepository;
 import com.javaweb.repository.UserRepository;
 import com.javaweb.service.BuildingService;
@@ -14,7 +12,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 
@@ -24,15 +21,17 @@ public class BuildingServiceImpl implements BuildingService {
     private BuildingRepository buildingRepository;
     @Autowired
     private UserRepository userRepository;
-    @Autowired
-    private AssignmentBuildingRepository assignmentBuildingRepository;
+//    @Autowired
+//    private AssignmentBuildingRepository assignmentBuildingRepository;
 
     @Override
     public ResponseDTO listStaffs(Long buildingId) {
         BuildingEntity building= buildingRepository.findById(buildingId).get();
         List<UserEntity> staffs= userRepository.findByStatusAndRoles_Code(1,"USER");
-        List< AssignmentBuildingEntity> assignment= building.getAssignmentBuildingEntities();
-        List<UserEntity> staffAssignment =  assignment.stream().map(it -> it.getUser()).collect(Collectors.toList());
+//        List< AssignmentBuildingEntity> assignment= building.getAssignmentBuildingEntities();
+//        List<UserEntity> staffAssignment =  assignment.stream().map(it -> it.getUser()).collect(Collectors.toList());
+
+        List<UserEntity>staffAssignment = building.getUsers();
         List<StaffResponseDTO> staffResponseDTOS = new ArrayList<>();
         ResponseDTO responseDTO = new ResponseDTO();
         for(UserEntity it : staffs) {
