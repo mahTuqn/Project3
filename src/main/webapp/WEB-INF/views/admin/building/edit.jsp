@@ -345,7 +345,7 @@
     function addOrUpdateBuilding(data) {
         $.ajax({
                     type: "POST",
-                    url: "http://localhost:8080/api/building",
+                    url: "http://localhost:8081/api/building",
                     data: JSON.stringify(data),
                     contentType: "application/json",
                     dataType: "JSON",

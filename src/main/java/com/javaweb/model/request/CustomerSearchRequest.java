@@ -1,6 +1,8 @@
-package com.javaweb.model.dto;
+package com.javaweb.model.request;
 
-public class CustomerDTO extends AbstractDTO{
+import com.javaweb.model.dto.AbstractDTO;
+
+public class CustomerSearchRequest extends AbstractDTO {
     private String fullName;
     private String managementStaff;
     private String customerPhone;
@@ -8,6 +10,33 @@ public class CustomerDTO extends AbstractDTO{
     private String demand;
     private String status;
     private String companyName;
+    private Long staffId;
+    private String address;
+
+    private String phone;
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public Long getStaffId() {
+        return staffId;
+    }
+
+    public void setStaffId(Long staffId) {
+        this.staffId = staffId;
+    }
 
     public String getCompanyName() {
         return companyName;

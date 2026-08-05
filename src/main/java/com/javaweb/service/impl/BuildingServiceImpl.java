@@ -27,7 +27,7 @@ public class BuildingServiceImpl implements BuildingService {
     @Override
     public ResponseDTO listStaffs(Long buildingId) {
         BuildingEntity building= buildingRepository.findById(buildingId).get();
-        List<UserEntity> staffs= userRepository.findByStatusAndRoles_Code(1,"USER");
+        List<UserEntity> staffs= userRepository.findByStatusAndRoles_Code(1,"STAFF");
 //        List< AssignmentBuildingEntity> assignment= building.getAssignmentBuildingEntities();
 //        List<UserEntity> staffAssignment =  assignment.stream().map(it -> it.getUser()).collect(Collectors.toList());
 

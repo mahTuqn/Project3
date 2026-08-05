@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@include file="/common/taglib.jsp"%>
+<%@ taglib prefix="security" uri="http://www.springframework.org/security/tags" %>
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <link rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
@@ -58,6 +60,7 @@
             </ul>
         </li>
     </ul>
+    <security:authorize access="hasRole('MANAGER')">
     <ul class="nav nav-list">
         <li class="">
             <a href="#" class="dropdown-toggle">
@@ -76,25 +79,25 @@
             </ul>
         </li>
     </ul>
-
-<%--    <ul class="nav nav-list">--%>
-<%--        <li class="">--%>
-<%--            <a href="#" class="dropdown-toggle">--%>
-<%--                <i class="menu-icon fa fas fa-users"></i>--%>
-<%--                <span class="menu-text">Quản Lý Khách Hàng</span>--%>
-<%--            </a>--%>
-<%--            <b class="arrow"></b>--%>
-<%--            <ul class="submenu">--%>
-<%--                <li class="">--%>
-<%--                    <a href='/admin/customer-list'>--%>
-<%--                        <i class="menu-icon fa fa-caret-right"></i>--%>
-<%--                        Danh sách khách hàng--%>
-<%--                    </a>--%>
-<%--                    <b class="arrow"></b>--%>
-<%--                </li>--%>
-<%--            </ul>--%>
-<%--        </li>--%>
-<%--    </ul>--%>
+</security:authorize>
+<ul class="nav nav-list">
+    <li class="">
+        <a href="#" class="dropdown-toggle">
+            <i class="fa-solid fa-user"></i>
+            <span class="menu-text">Quản Lý Khách Hàng</span>
+        </a>
+        <b class="arrow"></b>
+        <ul class="submenu">
+            <li class="">
+                <a href='/admin/customer-list'>
+                    <i class="menu-icon fa fa-caret-right"></i>
+                    Danh sách khách hàng
+                </a>
+                <b class="arrow"></b>
+            </li>
+        </ul>
+    </li>
+</ul>
     <div class="sidebar-toggle sidebar-collapse">
         <i class="ace-icon fa fa-angle-double-left ace-save-state" data-icon1="ace-icon fa fa-angle-double-left" data-icon2="ace-icon fa fa-angle-double-right"></i>
     </div>

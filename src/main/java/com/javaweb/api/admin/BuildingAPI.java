@@ -12,6 +12,7 @@ import com.javaweb.repository.BuildingRepository;
 import com.javaweb.repository.RentAreaRepository;
 import com.javaweb.repository.UserRepository;
 import com.javaweb.service.BuildingService;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -33,6 +34,8 @@ public class BuildingAPI {
     private UserRepository userRepository;
     @Autowired
     private RentAreaRepository rentAreaRepository;
+    @Autowired
+    private ModelMapper modelMapper;
 
     @Transactional
     @PostMapping

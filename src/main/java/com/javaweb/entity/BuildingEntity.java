@@ -75,6 +75,18 @@ public class BuildingEntity extends BaseEntity {
     @Column(name = "brokeragefee")
     private BigDecimal brokerageFee;
 
+    @Column( name = "type")
+    private String type;
+
+    @Column(name = "note")
+    private String note;
+
+    @Column(name="linkofbuilding")
+    private String linkOfBuilding;
+
+    @Column(name= "map")
+    private String map;
+
     @Column(name = "managername")
     private String managerName;
 
@@ -91,12 +103,12 @@ public class BuildingEntity extends BaseEntity {
 //    @OneToMany(mappedBy="building", fetch= FetchType.LAZY)
 //    private List<BuildingRentTypeEntity> buildingRentTies = new ArrayList<>();
 
-    @ManyToMany(fetch = FetchType.LAZY)
-        @JoinTable(name = "buildingrenttype",
-                joinColumns = @JoinColumn(name = "buildingid"),
-                inverseJoinColumns = @JoinColumn(name = "renttypeid")
-    )
-    private List<RentTypeEntity>rentTypes=new ArrayList<>();
+//    @ManyToMany(fetch = FetchType.LAZY)
+//        @JoinTable(name = "buildingrenttype",
+//                joinColumns = @JoinColumn(name = "buildingid"),
+//                inverseJoinColumns = @JoinColumn(name = "renttypeid")
+//    )
+//    private List<RentTypeEntity>rentTypes=new ArrayList<>();
 
     @OneToMany(mappedBy = "building", fetch = FetchType.LAZY,  cascade = {CascadeType.PERSIST, CascadeType.MERGE}, orphanRemoval = true)
     private List<RentAreaEntity> rentAreaEntities = new ArrayList<>();
@@ -108,15 +120,13 @@ public class BuildingEntity extends BaseEntity {
     )
     private List<UserEntity>users=new ArrayList<>();
 
-    public List<RentTypeEntity> getRentTypes() {
-        return rentTypes;
-    }
-
-    public void setRentTypes(List<RentTypeEntity> rentTypes) {
-        this.rentTypes = rentTypes;
-    }
-
-
+//    public List<RentTypeEntity> getRentTypes() {
+//        return rentTypes;
+//    }
+//
+//    public void setRentTypes(List<RentTypeEntity> rentTypes) {
+//        this.rentTypes = rentTypes;
+//    }
 
     public List<UserEntity> getUsers() {
         return users;
@@ -351,6 +361,37 @@ public class BuildingEntity extends BaseEntity {
         this.waterFee = waterFee;
     }
 
+    public String getNote() {
+        return note;
+    }
+
+    public void setNote(String note) {
+        this.note = note;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public String getLinkOfBuilding() {
+        return linkOfBuilding;
+    }
+
+    public void setLinkOfBuilding(String linkOfBuilding) {
+        this.linkOfBuilding = linkOfBuilding;
+    }
+
+    public String getMap() {
+        return map;
+    }
+
+    public void setMap(String map) {
+        this.map = map;
+    }
 //    public List<BuildingRentTypeEntity> getBuildingRentTies() {
 //        return buildingRentTies;
 //    }

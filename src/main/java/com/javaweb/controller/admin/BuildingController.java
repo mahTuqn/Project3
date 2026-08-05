@@ -2,13 +2,16 @@ package com.javaweb.controller.admin;
 
 import com.javaweb.entity.BuildingEntity;
 import com.javaweb.entity.RentAreaEntity;
+import com.javaweb.entity.UserEntity;
 import com.javaweb.enums.TypeCode;
 import com.javaweb.enums.district;
 import com.javaweb.model.dto.BuildingDTO;
+import com.javaweb.model.dto.MyUserDetail;
 import com.javaweb.model.request.BuildingSearchRequest;
 import com.javaweb.model.response.BuildingSearchResponse;
 import com.javaweb.repository.BuildingRepository;
 import com.javaweb.repository.RentAreaRepository;
+import com.javaweb.security.utils.SecurityUtils;
 import com.javaweb.service.IUserService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,6 +43,9 @@ public class BuildingController {
     @RequestMapping(value = "/admin/building-list", method = RequestMethod.GET)
     public ModelAndView buildingList(@ModelAttribute BuildingSearchRequest buildingSearchRequest, HttpServletRequest request) {
 
+        MyUserDetail currentUser = SecurityUtils.getPrincipal();
+        Long staffId = currentUser.getId();
+
        List<BuildingEntity>buildings;
         if(buildingSearchRequest.getName()!=null && !buildingSearchRequest.getName().trim().isEmpty()) {
              buildings=buildingRepository.find(buildingSearchRequest);
@@ -52,24 +58,29 @@ public class BuildingController {
 
         List<BuildingSearchResponse> responseList=new ArrayList<>();
 
-        for(BuildingEntity item : buildings) {
-            BuildingSearchResponse buildingSearchResponse = modelMapper.map(item, BuildingSearchResponse.class);
-//            BuildingSearchResponse buildingSearchResponse = new BuildingSearchResponse();
-//            buildingSearchResponse.setId(item.getId());
-//            buildingSearchResponse.setName(item.getName());
-            buildingSearchResponse.setAddress(item.getStreet()+item.getWard());
-//            buildingSearchResponse.setNumberOfBasement(item.getNumberOfBasement());
-//            buildingSearchResponse.setManagerName(item.getManagerName());
-//            buildingSearchResponse.setManagerPhone(item.getManagerPhone());
-//            buildingSearchResponse.setFloorArea(item.getFloorArea());
-
-            List<RentAreaEntity>rentAreas=rentAreaRepository.findByBuildingId(item.getId());
-            String values= rentAreas.stream().map(it-> it.getValue().toString()).collect(Collectors.joining(","));
-            buildingSearchResponse.setRentArea(values);
-
-//            BuildingSearchResponse buildingSearchResponse = modelMapper.map(item, BuildingSearchResponse.class);
-            responseList.add(buildingSearchResponse);
-
+        if(staffId == 1) {
+            for(BuildingEntity item : buildings) {
+                BuildingSearchResponse buildingSearchResponse = modelMapper.map(item, BuildingSearchResponse.class);
+                buildingSearchResponse.setAddress(item.getStreet()+item.getWard());
+                List<RentAreaEntity>rentAreas=rentAreaRepository.findByBuildingId(item.getId());
+                String values= rentAreas.stream().map(it-> it.getValue().toString()).collect(Collectors.joining(","));
+                buildingSearchResponse.setRentArea(values);
+                responseList.add(buildingSearchResponse);
+            }
+        }
+        else {
+            for(BuildingEntity item : buildings) {
+                for(UserEntity user : item.getUsers()) {
+                    if(user.getId() == staffId) {
+                        BuildingSearchResponse buildingSearchResponse = modelMapper.map(item, BuildingSearchResponse.class);
+                        buildingSearchResponse.setAddress(item.getStreet()+item.getWard());
+                        List<RentAreaEntity>rentAreas=rentAreaRepository.findByBuildingId(item.getId());
+                        String values= rentAreas.stream().map(it-> it.getValue().toString()).collect(Collectors.joining(","));
+                        buildingSearchResponse.setRentArea(values);
+                        responseList.add(buildingSearchResponse);
+                    }
+                }
+            }
         }
 
         mav.addObject("buildingList", responseList);

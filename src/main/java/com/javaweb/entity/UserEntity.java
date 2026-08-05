@@ -29,6 +29,20 @@ public class UserEntity extends BaseEntity {
     @Column(name = "email", unique = true)
     private String email;
 
+    @Column(name = "phone", unique = true)
+    private String phone;
+
+    @ManyToMany(mappedBy = "users", fetch = FetchType.LAZY)
+    private List<CustomerEntity>customers= new ArrayList<>();
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "user_role",
             joinColumns = @JoinColumn(name = "user_id", nullable = false),
