@@ -67,7 +67,7 @@ public class CustomerRepositoryImpl implements CustomerRepositoryCustom {
 
         StringBuilder sql = new StringBuilder("SELECT * FROM customer ");
         joinTable(customerSearchRequest, sql);
-        StringBuilder where = new StringBuilder(" WHERE 1 = 1 ");
+        StringBuilder where = new StringBuilder(" WHERE 1 = 1 AND customer.is_active = 1 ");
         queryNormal(customerSearchRequest, where);
         querySpecial(customerSearchRequest, where);
         sql.append(where);
