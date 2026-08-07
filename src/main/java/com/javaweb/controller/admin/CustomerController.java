@@ -53,7 +53,7 @@ public class CustomerController {
             customers=customerRepository.findByCustomer(customerSearchRequest);
         }
         else {
-            customers=customerRepository.findAll();
+            customers=customerRepository.findByIsActive(1);
         }
 
         List<CustomerSearchResponse>responseList = new ArrayList<>();

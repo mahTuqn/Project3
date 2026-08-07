@@ -2,7 +2,6 @@ package com.javaweb.api.admin;
 
 
 import com.javaweb.entity.CustomerEntity;
-import com.javaweb.entity.TransactionEntity;
 import com.javaweb.entity.UserEntity;
 import com.javaweb.model.dto.AssignmentCustomerDTO;
 import com.javaweb.model.dto.CustomerDTO;
@@ -58,19 +57,21 @@ public class CustomerAPI {
         modelMapper.map(customerDTO,customer);
         customer.setIsActive(1);
         customer.setUsers(users);
-        List<TransactionEntity>transactionList = transactionRepository.findByCustomerId(customerDTO.getId());
+        //List<TransactionEntity>transactionList = transactionRepository.findByCustomerId(customerDTO.getId());
 
-        customer.setTransactionEntities(transactionList);
-
+       // customer.setTransactionEntities(transactionList);
+        customer.setPhone(customerDTO.getCustomerPhone());
         customerRepository.save(customer);
     }
 
     @Transactional
     @DeleteMapping("/{ids}")
     public void deleteCustomer(@PathVariable Long[]ids) {
-
-        customerRepository.deleteByIdIn(ids);
-
+        List<CustomerEntity> customer = customerRepository.findByIdIn(ids);
+        for(CustomerEntity item : customer) {
+            item.setIsActive(0);
+            customerRepository.save(item);
+        }
     }
 
 

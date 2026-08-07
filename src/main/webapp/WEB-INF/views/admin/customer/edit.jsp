@@ -330,7 +330,7 @@
                 });
            if(note!=null) {
             addOrUpdateTransaction(data);
-            window.location.reload();
+            // window.location.reload();
            }
 
 
