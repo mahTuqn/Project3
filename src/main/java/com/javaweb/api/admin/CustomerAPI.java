@@ -90,4 +90,15 @@ public class CustomerAPI {
         customer.setUsers(staffs);
         customerRepository.save(customer);
     }
+
+    @Transactional
+    @PostMapping("/contact")
+    public void AddCustomer(@RequestBody CustomerDTO customerDTO) {
+        CustomerEntity customer = new CustomerEntity();
+        modelMapper.map(customerDTO,customer);
+        customer.setIsActive(1);
+        customer.setPhone(customerDTO.getCustomerPhone());
+        customer.setStatus("CHUA_HOAN_THANH");
+        customerRepository.save(customer);
+    }
 }
